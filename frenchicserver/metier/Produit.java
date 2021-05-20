@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author levilliard
  */
-public interface Produit {
+public interface Produit extends Remote {
     public int getQuantite()throws RemoteException;
     public void setQuantite(int quantite) throws RemoteException;
     public double getPrix()throws RemoteException;
@@ -21,3 +21,4 @@ public interface Produit {
     public void setNom(String nom) throws RemoteException;
     public List<Produit> getProduits()throws RemoteException;
 }
+

@@ -25,7 +25,7 @@ public class CommandeImpl  extends UnicastRemoteObject implements Commande{
     }
 
     @Override
-    public double getMontant() {
+    public double getMontant() throws RemoteException{
         return montant;
     }
 

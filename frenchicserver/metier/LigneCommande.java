@@ -12,8 +12,8 @@ import java.util.List;
  *
  * @author levilliard
  */
-public interface LigneCommande {
-    public int getQuantite()throws RemoteException;
+public interface LigneCommande extends Remote{
+    public int getQuantite() throws RemoteException;
     public void setQuantite(int quantite)throws RemoteException;
     public double getMontant()throws RemoteException;
     public void setMontant(double montant)throws RemoteException;

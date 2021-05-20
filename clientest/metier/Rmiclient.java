@@ -14,6 +14,8 @@ import java.rmi.RMISecurityManager;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import java.util.List;
+
 public class Rmiclient {
 
   public static void main(String[] args) {
@@ -22,11 +24,16 @@ public class Rmiclient {
     System.setProperty("java.security.policy","C:/Users/levilliard/Documents/NetBeansProjects/rmiserver/src/policy.policy");
 
     try {
-      Remote r = Naming.lookup("rmi://192.168.1.69/ClientRMI");
+      Remote r = Naming.lookup("rmi://192.168.1.69/ProduitRMI");
       System.out.println(r);
-      if (r instanceof Client) {
-        String inf = ((Client)r).getNom();
-        System.out.println("chaine renvoyee = " + inf);
+      if (r instanceof Produit) {
+        String inf = ((Produit)r).getNom();
+        List<Produit> produits = ((Produit)r).getProduits();
+        for(Produit p: produits){
+          System.out.println("Produit: " + p.getNom());
+        }
+      }else{
+        System.out.println("Not an instance of ...");
       }
     } catch (MalformedURLException e) {
       e.printStackTrace();

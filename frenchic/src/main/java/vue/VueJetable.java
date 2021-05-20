@@ -24,7 +24,13 @@ import javax.swing.border.Border;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 import controlleur.*;
-import metier.test.*;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import metier.Client;
+import metier.Commande;
+import metier.LigneCommande;
+import metier.Produit;
 
 public class VueJetable {
 
@@ -33,10 +39,6 @@ public class VueJetable {
     static JFrame framePan;
 
     public static void main(String[] args) {
-        Client.initializeClients();
-        Commande.initializeCommandes();
-        Produit.initializeProduits();
-
         session = new Session();
         TraiterConnexionReponse reponse = session.traiterConnexion();
         if (reponse.typeEcran == EnumTypeEcran.ECRAN_ACCUEIL) {
@@ -96,10 +98,19 @@ public class VueJetable {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // TODO Auto-generated method stub
-                TraiterIdentificationReponse reponse = session.traiterIdentification(pseudoField.getText(), mdpField.getText());
+                TraiterIdentificationReponse reponse = null;
+                try {
+                    reponse = session.traiterIdentification(pseudoField.getText(), mdpField.getText());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(VueJetable.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 frame.setVisible(false);
                 if (reponse.typeEcran == EnumTypeEcran.ECRAN_ACCUEIL_PERSO) {
-                    afficherEcranAccueilPerso(reponse.leClient, reponse.leProduit);
+                    try {
+                        afficherEcranAccueilPerso(reponse.leClient, reponse.leProduit);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(VueJetable.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });
@@ -114,7 +125,7 @@ public class VueJetable {
 
     }
 
-    private static void afficherEcranAccueilPerso(final Client client, final Produit produit) {
+    private static void afficherEcranAccueilPerso(final Client client, final Produit produit) throws RemoteException {
         frame = new JFrame();
         frame.setTitle("French Chic - Produit du jour");
         frame.setSize(650, 500);
@@ -175,16 +186,25 @@ public class VueJetable {
             public void actionPerformed(ActionEvent arg0) {
                 // TODO Auto-generated method stub
                 Integer intg = new Integer(quantiteField.getText());
-                TraiterAjoutPanierReponse reponse = session.traiterAjoutPanier(produit, intg);
+                TraiterAjoutPanierReponse reponse = null;
+                try {
+                    reponse = session.traiterAjoutPanier(produit, intg);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(VueJetable.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 frame.setVisible(false);
                 
-                if(intg > produit.getQuantite()){
-                    showMessageDialog(null, "Oops ! Nous n' avons pas assez de " + produit.getNom() + " en Stock !");
-                    //quantiteField.resetKeyboardActions();
-                    frame.dispose();
-                    
-                }else if (reponse.typeEcran == EnumTypeEcran.ECRAN_PANIER) {
-                    afficherEcranPanier(reponse.laCommande);
+                try {
+                    if(intg > produit.getQuantite()){
+                        showMessageDialog(null, "Oops ! Nous n' avons pas assez de " + produit.getNom() + " en Stock !");
+                        //quantiteField.resetKeyboardActions();
+                        frame.dispose();
+                        
+                    }else if (reponse.typeEcran == EnumTypeEcran.ECRAN_PANIER) {
+                        afficherEcranPanier(reponse.laCommande);
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(VueJetable.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -199,7 +219,7 @@ public class VueJetable {
         frame.setVisible(true);
     }
 
-    private static void afficherEcranPanier(Commande laCommande) {
+    private static void afficherEcranPanier(Commande laCommande) throws RemoteException {
         framePan = new JFrame();
         framePan.setTitle("French Chic - Panier");
         framePan.setSize(650, 500);

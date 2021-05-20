@@ -6,7 +6,7 @@
 package controlleur;
 
 import controlleur.EnumTypeEcran;
-import metier.test.Commande;
+import metier.Commande;
 
 /**
  *

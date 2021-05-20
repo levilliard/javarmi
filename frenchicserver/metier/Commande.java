@@ -13,8 +13,8 @@ import java.util.List;
  *
  * @author levilliard
  */
-public interface Commande {
-    public double getMontant();
+public interface Commande  extends Remote{
+    public double getMontant()  throws RemoteException;
     public void setMontant(double montant) throws RemoteException;
     public List<LigneCommande> getLesLignesCommande() throws RemoteException;
     public void ajouterCommande(LigneCommande lCommande) throws RemoteException;

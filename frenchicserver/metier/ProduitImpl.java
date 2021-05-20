@@ -15,6 +15,7 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author levilliard
  */
+
 public class ProduitImpl  extends UnicastRemoteObject implements Produit{
     private int quantite;
     private double prix;
@@ -25,6 +26,7 @@ public class ProduitImpl  extends UnicastRemoteObject implements Produit{
 
     public ProduitImpl() throws RemoteException {
        this.produits = new ArrayList<Produit>();
+       this.nom = "Not ready yet !";
     }
     
     public ProduitImpl(int quantite, double prix, String nom) throws RemoteException {

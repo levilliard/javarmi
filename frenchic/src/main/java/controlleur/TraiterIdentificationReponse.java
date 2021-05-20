@@ -7,7 +7,7 @@ package controlleur;
 
 import controlleur.EnumTypeEcran;
 import metier.Client;
-import metier.test.Produit;
+import metier.Produit;
 
 /**
  *
