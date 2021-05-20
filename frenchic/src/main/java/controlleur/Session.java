@@ -78,7 +78,7 @@ public class Session {
         }
         
         int randomNum = ThreadLocalRandom.current().nextInt(0, MAX_SIZE);
-        response.leProduit = produit.getProduits().get(randomNum);
+        response.leProduit = produit.getProduits().get(0);
         return response;
     }
     
@@ -86,6 +86,7 @@ public class Session {
         ligneCommande.setProduit(produit);
         ligneCommande.setQuantite(qt);
         ligneCommande.setMontant(qt * produit.getPrix());
+        produit.setQuantite(produit.getQuantite() - qt);
         
         commande.ajouterCommande(ligneCommande);
         commande.setMontant(qt * produit.getPrix());

@@ -184,24 +184,19 @@ public class VueJetable {
         ajouterProduit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                // TODO Auto-generated method stub
-                Integer intg = new Integer(quantiteField.getText());
                 TraiterAjoutPanierReponse reponse = null;
+                  
                 try {
-                    reponse = session.traiterAjoutPanier(produit, intg);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(VueJetable.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                frame.setVisible(false);
-                
-                try {
+                    Integer intg = new Integer(quantiteField.getText());
                     if(intg > produit.getQuantite()){
                         showMessageDialog(null, "Oops ! Nous n' avons pas assez de " + produit.getNom() + " en Stock !");
-                        //quantiteField.resetKeyboardActions();
-                        frame.dispose();
-                        
-                    }else if (reponse.typeEcran == EnumTypeEcran.ECRAN_PANIER) {
-                        afficherEcranPanier(reponse.laCommande);
+                        //quantiteField.resetKeyboardActions();                        
+                    }else {
+                        reponse = session.traiterAjoutPanier(produit, intg);
+                        if (reponse.typeEcran == EnumTypeEcran.ECRAN_PANIER){
+                            frame.setVisible(false);
+                           afficherEcranPanier(reponse.laCommande);
+                        }
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(VueJetable.class.getName()).log(Level.SEVERE, null, ex);
@@ -245,7 +240,7 @@ public class VueJetable {
         String prixHTLg = nf.format(ligneC.getProduit().getPrix());
         String montantLg = nf.format(ligneC.getMontant());
 
-        String stock = (ligneC.getProduit().getQuantite() - ligneC.getQuantite()) + "";
+        String stock = (ligneC.getProduit().getQuantite()) + "";
         
         String[] entetes = {"Libelle", "Prix HT", "Quantite", "Montant", "Stock"};
 
