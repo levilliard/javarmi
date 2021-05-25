@@ -32,22 +32,24 @@ public class Session {
     
     public Session(){
         System.setProperty("java.security.policy","C:/Users/levilliard/Documents/NetBeansProjects/rmiserver/src/policy.policy");
+        final String address = "rmi://192.168.1.69/"
+
         try {
-          Remote rm1 = Naming.lookup("rmi://192.168.1.69/ClientRMI");
+          Remote rm1 = Naming.lookup(address + "ClientRMI");
           if (rm1 instanceof Client) {
             client = ((Client)rm1);
           }
           
-          Remote rm2 = Naming.lookup("rmi://192.168.1.69/ProduitRMI");
+          Remote rm2 = Naming.lookup(address + "ProduitRMI");
           if (rm2 instanceof Produit) {
               produit = ((Produit)rm2);
           }
           
-          Remote rm3 = Naming.lookup("rmi://192.168.1.69/CommandeRMI");
+          Remote rm3 = Naming.lookup(address + "CommandeRMI");
           if (rm3 instanceof Commande) {
             commande = ((Commande)rm3);
           }
-          Remote rm4 = Naming.lookup("rmi://192.168.1.69/LigneCommandeRMI");
+          Remote rm4 = Naming.lookup(address + "LigneCommandeRMI");
           if (rm4 instanceof LigneCommande) {
             ligneCommande = ((LigneCommande)rm4);
           }
